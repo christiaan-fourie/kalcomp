@@ -7,7 +7,7 @@ This is a simple calculator application built with Next.js.
 To get started, clone the repository and install the dependencies:
 
 ```bash
-git clone https://github.com/<christiaan-fourie>/kalcomp.git
+git clone https://github.com/christiaan-fourie/kalcomp.git
 cd kalcomp
 npm install
 ```
