@@ -17,7 +17,7 @@ button {
 }
 
 main {
-  min-height: 100%;
+  min-height: 100vh;
 }
 
 /* Get system theme color */
