@@ -17,26 +17,25 @@ button {
 }
 
 main {
-  min-height: 100vh;
-  display: flex;
+  min-height: 100%;
 }
 
 /* Get system theme color */
 @media (prefers-color-scheme: dark) {
   main {
-    background-color: #000;
-    color: #fff;
+    background-color: #232B2B;
+    color: #fAfAfA;
   }
 }
 
 /* Dark Mode */
 main[data-theme="dark"] {
-  background-color: #000;
-  color: #fff;
+  background-color: #232B2B;
+  color: #fAfAfA;
 }
 
 /* Light Mode */
 main[data-theme="light"] {
-  background-color: #fff;
-  color: #000;
+  background-color: #fAfAfA;
+  color: #232B2B;
 }
