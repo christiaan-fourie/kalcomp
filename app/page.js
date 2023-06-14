@@ -1,46 +1,50 @@
 'use client'
-import { FaSun, FaRegMoon, FaEye, FaGithub } from 'react-icons/fa'
-import Image from 'next/image'
-import Link from 'next/link'
+import { FaSun, FaRegMoon, FaEye, FaGithub } from 'react-icons/fa';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
-import styles from './page.module.css'
-import Calculator from './components/Calculator'
-import Display from './components/Display'
+import Calculator from './components/Calculator';
 
 export default function Home() {
+  // Set the theme
+  const [theme, setTheme] = useState('system');
 
-  const [theme, setTheme] = useState('system')
+  const themeTransitions = {
+    light: 'dark',
+    dark: 'system',
+    system: 'light',
+  };
 
   // Toggle between themes
   const toggleTheme = () => {
-    if (theme === 'light') setTheme('dark')
-    else if (theme === 'dark') setTheme('system')
-    else if (theme === 'system') setTheme('light')
-  }
+    setTheme(themeTransitions[theme]);
+  };
 
+  const themeIcons = {
+    light: <FaSun size={20} />,
+    dark: <FaRegMoon size={20} />,
+    system: <FaEye size={20} />,
+  };
+
+  
   return (
     <main data-theme={theme}>
-      <header className='flex items-center h-24 justify-between w-full px-12 border-b'>
-        <h1 className='flex flex-row gap-4 items-center text-4xl font-thin tracking-tighter'>
-          {/* Next Image */}
-          <Image src='/logo.png' alt='logo' width={48} height={48} />          
+      <div className='flex items-center h-24 justify-between w-full px-12 border-b'>
+        <h1 className='flex flex-row gap-4 items-center text-4xl font-thick tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-[#9A187B] to-[#444294]'>
+          <Image src='/logo.png' alt='logo' width={48} height={48} />
           KALCOMP
         </h1>
 
-
-        {/* A button that toggles between the themes */}
-        <div className='flex items-center gap-4' title='Toggle Theme' >
-          {theme === 'light' && <button onClick={() => toggleTheme()}><FaSun size={20} /></button> }
-          {theme === 'dark' && <button onClick={() => toggleTheme()}><FaRegMoon size={20} /></button> }
-          {theme === 'system' && <button onClick={() => toggleTheme()}><FaEye size={20} /></button> }
-          {/* A Github Icon */}
-          <Link target='_blank' href='https://github.com/christiaan-fourie/Kalcomp' ><FaGithub size={20} /></Link>
+        <div className='flex items-center gap-4' title='Toggle Theme'>
+          <button onClick={toggleTheme}>{themeIcons[theme]}</button>
+          <Link target='_blank' href='https://github.com/christiaan-fourie/Kalcomp'>
+            <FaGithub size={20} />
+          </Link>
         </div>
-      </header>
-      <Display />
+      </div>
       <Calculator />
     </main>
-  )
+  );
 }
