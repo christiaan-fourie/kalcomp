@@ -1,110 +1,63 @@
 'use client'
 
-
-import React from 'react'
+// Import React dependencies
 import { useState } from 'react'
 
 // Import calculator utils
 import { calculate } from '../utils/calculator'
 
+// Icons
 import { FaBackspace } from 'react-icons/fa'
 
+// Calculator component
 const Calculator = () => {
+  // Set the calculator string
+  const [calcString, setCalcString] = useState("0");
 
-  // Set the calcultor string
-  const [calcString, setCalcString] = useState('0')
+  // Helper function to check if input is a number
+  const isNumber = (input:string) => /^[0-9]$/.test(input);
+
+  // Helper function to check if input is an operator
+  const isOperator = (input:string) => /^[+\-x÷]$/.test(input);
 
   // Input handler
-  const handleInput = ({input}) => {
+  const handleInput = ({ input }) => {
+    const lastChar = calcString.slice(-1);
 
-    // Handle special cases
-    if (input === 'C' || input === 'CE' ) {
-      setCalcString('0')
-      return
+    switch (input) {
+      case "C":
+      case "CE":
+        setCalcString("0");
+        break;
+
+      case "backspace":
+        setCalcString(calcString.slice(0, -1) || "0");
+        break;
+
+      case ".":
+        if (isNumber(lastChar)) setCalcString(calcString + input);
+        break;
+
+      case "=":
+        if (isNumber(lastChar)) setCalcString(calculate(calcString).toString());
+        break;
+
+      case "%":
+        if (isNumber(lastChar) || isOperator(lastChar))
+          setCalcString(calcString.slice(0, -1) + input);
+        break;
+
+      default:
+        if (isNumber(input)) {
+          setCalcString(calcString === "0" ? input : calcString + input);
+        } else if (isOperator(input)) {
+          if (isNumber(lastChar) || isOperator(lastChar))
+            setCalcString(calcString.slice(0, -1) + input);
+        }
     }
-
-    // Handle backspace
-    if (input === 'backspace') {
-      console.log('backspace');
-      
-      // New calcString minus the last character
-      const newCalcString = calcString.slice(0, -1)
-      // If the new calcString is empty, set it to 0
-      if (newCalcString === '') {
-        setCalcString('0')
-      } else {
-        setCalcString(newCalcString)
-      }
-      return
-    }
-
-    // Handle numbers
-    if (input === '0' || input === '1' || input === '2' || input === '3' || input === '4' || input === '5' || input === '6' || input === '7' || input === '8' || input === '9') {
-      console.log(input, ' is a number') 
-      if (calcString === '0') {
-        setCalcString(input)
-      } else {
-        setCalcString(calcString + input)
-      }
-      return
-    }
-
-    // Handle operators only works if there is a number entered before it
-    if (input === '+' || input === '-' || input === 'x' || input === '÷') {
-      // Get the last character of the calcString
-      const lastChar = calcString.slice(-1)
-      // Check if the last character is a number
-      if (lastChar === '0' || lastChar === '1' || lastChar === '2' || lastChar === '3' || lastChar === '4' || lastChar === '5' || lastChar === '6' || lastChar === '7' || lastChar === '8' || lastChar === '9') {
-        setCalcString(calcString + input)
-      }
-      // If the last character is an operator, replace it with the new operator
-      if (lastChar === '+' || lastChar === '-' || lastChar === 'x' || lastChar === '÷') {
-        setCalcString(calcString.slice(0, -1) + input)
-      }
-      return
-    }
-
-    // Handle decimal point
-    if (input === '.') {
-      // Get the last character of the calcString
-      const lastChar = calcString.slice(-1)
-      // Check if the last character is a number
-      if (lastChar === '0' || lastChar === '1' || lastChar === '2' || lastChar === '3' || lastChar === '4' || lastChar === '5' || lastChar === '6' || lastChar === '7' || lastChar === '8' || lastChar === '9') {
-        setCalcString(calcString + input)
-      }
-      return
-    }
-
-    // Handle percentage
-    if (input === '%') {
-      // Add the percentage sign to the calcString if the last character is a number
-      const lastChar = calcString.slice(-1)
-      if (lastChar === '0' || lastChar === '1' || lastChar === '2' || lastChar === '3' || lastChar === '4' || lastChar === '5' || lastChar === '6' || lastChar === '7' || lastChar === '8' || lastChar === '9') {
-        setCalcString(calcString + input)
-      }
-      // If the last character is an operator, replace it with the percentage sign
-      if (lastChar === '+' || lastChar === '-' || lastChar === 'x' || lastChar === '÷') {
-        setCalcString(calcString.slice(0, -1) + input)
-      }
-      return
-    }
-
-    // Handle equals
-    if (input === '=') {
-      // Get the last character of the calcString
-      const lastChar = calcString.slice(-1)
-      // Check if the last character is a number
-      if (lastChar === '0' || lastChar === '1' || lastChar === '2' || lastChar === '3' || lastChar === '4' || lastChar === '5' || lastChar === '6' || lastChar === '7' || lastChar === '8' || lastChar === '9') {
-        const result = calculate(calcString)
-        setCalcString(result.toString())
-      }
-      return
-    }
-    
-
-
   }
 
+  // Calculator buttons
   const buttons = [
     { id: 1, value: '%', display: '%' },
     { id: 2, value: 'C', display: 'C' },
